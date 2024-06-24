@@ -15,6 +15,7 @@
 		pokemon_ids: [1, 2, 5]
 	};
 	let isModalOpen = false;
+	let searchInput = '';
 
 	async function refreshPokemonData() {
 		pokemonData = [];
@@ -76,8 +77,29 @@
 	});
 
 	async function savePageEdits() {
-		console.log('Saving');
+		await saveProfile();
+		await refreshPokemonData();
 		isModalOpen = false;
+	}
+
+	async function togglePokemon(id: number) {
+		let pokemonIDs = profile.pokemon_ids;
+		// [1,2,3] "toggle 2" -> [1,3] -. "toggle 2" -> [1,2,3]
+
+		// make sure we never have more than 3 pokemon
+		if (pokemonIDs.length >= 3 && !pokemonIDs.includes(id)) {
+			alert('You can only have 3 pokemon max!');
+			return;
+		}
+		// if pokemonIDs has ID, remove it
+		if (pokemonIDs.includes(id)) {
+			let index = pokemonIDs.indexOf(id);
+			pokemonIDs.splice(index, 1);
+		} else {
+			pokemonIDs.push(id);
+		}
+
+		profile.pokemon_ids = [...pokemonIDs];
 	}
 </script>
 
@@ -118,20 +140,32 @@
 							bind:value={profile.description}
 							class="text-area textarea-bordered textarea-lg h-[300px] w-full max-w-md"
 						/>
-						<button class="btn btn-success" on:click={() => savePageEdits()}>Save Edits</button>
+						<!-- <button class="btn btn-success" on:click={() => savePageEdits()}>Save Edits</button> -->
 						<p class="p-2 text-white">Select your pokemon</p>
 						<div class="m-3 grid max-h-[600px] grid-cols-3 overflow-y-scroll">
+							<div class="col-span-3">
+								<input
+									type="text"
+									class="input input-bordered w-full"
+									placeholder="Search for a pokemon!"
+									bind:value={searchInput}
+								/>
+							</div>
 							{#each pokemonList as pokemon, index}
-								<button
-									class={'card m-1 h-12 items-center justify-center bg-slate-700 p-1 ' +
-										(profile.pokemon_ids.includes(index + 1) ? 'border-2 border-blue-600' : '')}
-								>
-									<div class="text-center">
-										<h2 class="text-hl text-white">{pokemon.name}</h2>
-									</div>
-								</button>
+								{#if pokemon.name.includes(searchInput)}
+									<button
+										class={'card m-1 h-12 items-center justify-center bg-slate-700 p-1 ' +
+											(profile.pokemon_ids.includes(index + 1) ? 'border-2 border-blue-600' : '')}
+										on:click={() => togglePokemon(index + 1)}
+									>
+										<div class="text-center">
+											<h2 class="text-hl text-white">{pokemon.name}</h2>
+										</div>
+									</button>
+								{/if}
 							{/each}
 						</div>
+						<button class="btn btn-success" on:click={() => savePageEdits()}>Save Edits</button>
 					</div>
 				</dialog>
 			{/if}
