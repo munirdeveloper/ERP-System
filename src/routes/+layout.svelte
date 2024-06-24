@@ -22,12 +22,11 @@
 </script>
 
 <div class="bg-base-100 fixed left-0 right-0 top-0 justify-between">
-	<div class="navbar mx-auto max-w-3xl justify-between">
+	<div class="navbar mx-auto max-w-3xl justify-center">
 		<div>
-			<a href="/" class="btn btn-ghost text-xl">Armada Inc</a>
+			<a href="/" class="btn btn-ghost text-xl">Pokemoons</a>
 			{#if session !== null}
-				<a href="/{session.user.email}" class="btn btn-ghost">My Page</a>
-				<a href="/inventory" class="btn btn-ghost">Inventory</a>		 
+				<a href="/{session.user.email}" class="btn btn-ghost">My Pokemoons</a>
 			{/if}
 		</div>
 		<div>
