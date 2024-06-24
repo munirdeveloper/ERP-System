@@ -2,29 +2,29 @@
 	export let data;
 	import { Auth } from '@supabase/auth-ui-svelte';
 	import { ThemeSupa } from '@supabase/auth-ui-shared';
-    import { goto } from '$app/navigation';
+	import { goto } from '$app/navigation';
 
 	let { supabase, session } = data;
 	$: ({ supabase, session } = data);
 
 	console.log(supabase);
 	console.log(session);
-    $: if(session) {
-        goto("/")
-    }
+	$: if (session) {
+		goto('/${session.user.email}');
+	}
 </script>
 
-<div class="hero min-h-screen bg-black  ">
-	<div class="hero-content w-[800px]">
-		<div class="flex flex-col">
-			<p class="text-white">Create an account or login below!</p>
+<div class="hero flex min-h-screen items-center justify-center bg-black">
+	<div class="hero-content max-w-screen-md">
+		<div class="flex flex-col items-center text-white">
+			<p class="mb-4">Create an account or login below!</p>
 			<Auth
 				supabaseClient={supabase}
 				theme="dark"
 				appearance={{
 					theme: ThemeSupa,
 					style: {
-						input: 'width: 400px;'
+						input: 'w-full' // Adjust input width to full width
 					}
 				}}
 			/>
