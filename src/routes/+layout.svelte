@@ -21,21 +21,28 @@
 	});
 </script>
 
-<div class="bg-base-100 fixed left-0 right-0 top-0 justify-between">
-	<div class="navbar mx-auto max-w-3xl justify-center">
-		<div>
-			<a href="/" class="btn btn-ghost text-xl">Pokemoons</a>
+<div class="top-0 w-full bg-gray-900">
+	<div class="navbar container mx-auto flex items-center justify-between px-6 py-4">
+		<div class="flex items-center space-x-4">
+			{#if session === null}
+				<a href="/" class="text-xl font-bold text-white hover:text-gray-300">Pokemoons</a>
+			{/if}
 			{#if session !== null}
-				<a href="/{session.user.email}" class="btn btn-ghost">My Pokemoons</a>
+				<a href="/{session.user.email}" class="text-xl font-bold text-white hover:text-gray-300"
+					>My Pokemoons</a
+				>
 			{/if}
 		</div>
-		<div>
+		<div class="flex items-center space-x-4">
 			{#if session == null}
-				<button on:click={() => goto('/login')}>Login</button>
+				<button
+					on:click={() => goto('/login')}
+					class="rounded px-8 py-2 text-white hover:text-gray-300">Login</button
+				>
 			{:else}
 				<span class="ml-2 text-lg text-white">{session.user.email}</span>
 				<button
-					class="btn btn-ghost ml-2"
+					class="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
 					on:click={async () => {
 						await supabase.auth.signOut();
 					}}>Logout</button
@@ -44,5 +51,6 @@
 		</div>
 	</div>
 </div>
+
 
 <slot></slot>

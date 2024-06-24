@@ -103,11 +103,11 @@
 	}
 </script>
 
-<div class="hero min-h-screen bg-blue-400">
-	<div class="hero-content mb-80">
+<!-- <div class="hero min-h-screen bg-gray-300">
+	<div class="hero-content">
 		<div class="max-w-2xl text-center">
-			<h1 class="text-4xl font-bold text-white">{email}'s Page</h1>
-			<p class="mx-auto max-w-md py-3">{profile.description}</p>
+			<h1 class="text-4xl font-bold text-black">{email}'s Page</h1>
+			<p class="mx-auto max-w-md py-3 text-lg md:text-xl lg:text-2xl">{profile.description}</p>
 			<div class="grid grid-cols-3">
 				{#if pokemonData === undefined}
 					<p>Loading ...</p>
@@ -129,19 +129,19 @@
 					{/each}
 				{/if}
 			</div>
+
 			{#if email == session?.user?.email}
 				<button class="btn btn-info" on:click={() => (isModalOpen = true)}>Edit Page</button>
 				<dialog class="modal min-w-lg" class:modal-open={isModalOpen}>
 					<div class="modal-box bg-blue-200">
 						<h3>Edit Your PokePage</h3>
 						<p>Here you can make edits to your page, such as description or pokemon selected</p>
-						<p class="p-2 text-white">Edit your description</p>
+						<p class="p-2 text-black">Edit your description</p>
 						<textarea
 							bind:value={profile.description}
 							class="text-area textarea-bordered textarea-lg h-[300px] w-full max-w-md"
 						/>
-						<!-- <button class="btn btn-success" on:click={() => savePageEdits()}>Save Edits</button> -->
-						<p class="p-2 text-white">Select your pokemon</p>
+						<p class="p-2 text-black">Select your pokemon</p>
 						<div class="m-3 grid max-h-[600px] grid-cols-3 overflow-y-scroll">
 							<div class="col-span-3">
 								<input
@@ -166,6 +166,117 @@
 							{/each}
 						</div>
 						<button class="btn btn-success" on:click={() => savePageEdits()}>Save Edits</button>
+					</div>
+				</dialog>
+			{/if}
+		</div>
+	</div>
+</div> -->
+
+<div class="min-h-screen bg-gray-300 pt-20">
+	<!-- Padding top for the fixed navbar -->
+	<div class="container mx-auto p-4">
+		<!-- Center the content horizontally and add padding -->
+		<div class="mx-auto max-w-2xl text-center">
+			<h1 class="text-4xl font-bold text-black">{email}'s Page</h1>
+			<p class="mx-auto max-w-md py-3 text-lg md:text-xl lg:text-2xl">{profile.description}</p>
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				{#if pokemonData === undefined}
+					<p>Loading ...</p>
+				{:else}
+					{#each pokemonData as pokemon}
+						<div class="card m-4 bg-slate-700 shadow-lg shadow-blue-900">
+							<div class="card-body">
+								<div class="text-center">
+									<img
+										src={pokemon.sprites.front_default}
+										alt="Pokemon"
+										class="mx-auto h-32 w-32"
+									/>
+									<h2 class="text-2xl font-bold text-white">{pokemon.name}</h2>
+									<p class="text-info">{pokemon.types[0].type.name}</p>
+								</div>
+							</div>
+						</div>
+					{/each}
+				{/if}
+			</div>
+			{#if email == session?.user?.email}
+				<button class="btn btn-info" on:click={() => (isModalOpen = true)}>Edit Page</button>
+				<!-- <dialog class="modal min-w-lg" class:modal-open={isModalOpen}>
+					<div class="modal-box bg-gray-900">
+						<h3>Edit Your PokePage</h3>
+						<p>Here you can make edits to your page, such as description or pokemon selected</p>
+						<p class="p-2 text-black">Edit your description</p>
+						<textarea
+							bind:value={profile.description}
+							class="text-area textarea-bordered textarea-lg h-[300px] w-full max-w-md"
+						/>
+						<p class="p-2 text-black">Select your pokemon</p>
+						<div class="m-3 grid max-h-[600px] grid-cols-3 overflow-y-scroll">
+							<div class="col-span-3">
+								<input
+									type="text"
+									class="input input-bordered w-full"
+									placeholder="Search for a pokemon!"
+									bind:value={searchInput}
+								/>
+							</div>
+							{#each pokemonList as pokemon, index}
+								{#if pokemon.name.includes(searchInput)}
+									<button
+										class={'card m-1 h-12 items-center justify-center bg-slate-700 p-1 ' +
+											(profile.pokemon_ids.includes(index + 1) ? 'border-2 border-blue-600' : '')}
+										on:click={() => togglePokemon(index + 1)}
+									>
+										<div class="text-center">
+											<h2 class="text-hl text-white">{pokemon.name}</h2>
+										</div>
+									</button>
+								{/if}
+							{/each}
+						</div>
+						<button class="btn btn-success" on:click={() => savePageEdits()}>Save Edits</button>
+					</div>
+				</dialog> -->
+				<dialog class="modal min-w-lg" class:modal-open={isModalOpen}>
+					<div class="modal-box bg-gray-900 p-4 text-white">
+						<h3 class="mb-4 text-2xl font-bold">Edit Your PokePage</h3>
+						<p class="mb-4 text-lg">
+							Here you can make edits to your page, such as description or pokemon selected
+						</p>
+						<p class="p-2 text-white">Edit your description</p>
+						<textarea
+							bind:value={profile.description}
+							class="text-area textarea-bordered textarea-lg h-[300px] w-full max-w-md"
+							placeholder="Enter your description here..."
+						></textarea>
+						<p class="p-2 text-white">Select your pokemon</p>
+						<div class="m-3 grid max-h-[600px] grid-cols-3 overflow-y-scroll">
+							<div class="col-span-3">
+								<input
+									type="text"
+									class="input input-bordered w-full"
+									placeholder="Search for a pokemon!"
+									bind:value={searchInput}
+								/>
+							</div>
+							{#each pokemonList as pokemon, index}
+								{#if pokemon.name.includes(searchInput)}
+									<button
+										class={'card m-1 h-12 items-center justify-center bg-slate-700 p-1 ' +
+											(profile.pokemon_ids.includes(index + 1) ? 'border-2 border-blue-600' : '')}
+										on:click={() => togglePokemon(index + 1)}
+									>
+										<div class="text-center">
+											<h2 class="text-hl text-white">{pokemon.name}</h2>
+										</div>
+									</button>
+								{/if}
+							{/each}
+						</div>
+						<button class="btn btn-success mt-4" on:click={() => savePageEdits()}>Save Edits</button
+						>
 					</div>
 				</dialog>
 			{/if}
