@@ -27,6 +27,7 @@
 			<a href="/" class="btn btn-ghost text-xl">Armada Inc</a>
 			{#if session !== null}
 				<a href="/{session.user.email}" class="btn btn-ghost">My Page</a>
+				<a href="/inventory" class="btn btn-ghost">Inventory</a>		 
 			{/if}
 		</div>
 		<div>
@@ -35,7 +36,7 @@
 			{:else}
 				<span class="ml-2 text-lg text-white">{session.user.email}</span>
 				<button
-					class="ml-2"
+					class="btn btn-ghost ml-2"
 					on:click={async () => {
 						await supabase.auth.signOut();
 					}}>Logout</button
@@ -46,5 +47,3 @@
 </div>
 
 <slot></slot>
-
-<style></style>
